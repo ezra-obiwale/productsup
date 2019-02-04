@@ -15,4 +15,6 @@
 ## Dependencies
 
 - barryvdh/laravel-cors: To allow CORS access to resource
+- mpociot/laravel-apidoc-generator: To generate api documentation
 - ramsey/uuid: To create UUIDs for each model
+- spatie/laravel-query-builder: For filtering
