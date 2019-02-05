@@ -18,21 +18,22 @@ class DataController extends Controller
     /**
      * Fetch a paginated list of data.
      *
-     * Support filtering with on all fields. For exampole, `/api/data?q[description]=sodium
-     *
+     * Support filtering with on all fields. For example, `/api/data?q[description]=sodium
+     * @responseFile app/docs/index.json
      * @return JsonResponse
      */
     public function index() : JsonResponse
     {
-        $paginationData = QueryBuilder::for(Data)::allowedFilters(
-            'title', 'description', 'short_description',
-            'category', 'price', 'image_link', 'deeplink'
+        $paginationData = QueryBuilder::for(Data::class)
+            ->allowedFilters(
+                'title', 'description', 'short_description',
+                'category', 'price', 'image_link', 'deeplink'
             )
             ->simplePaginate(10)
             ->toArray();
-        $data = $paginationData['items'];
-        unset($paginationData['items']);
-        return $this->success($data, 200, ['meta' => $paginationData]);
+        $data = $paginationData['data'];
+        unset($paginationData['data']);
+        return $this->success($data, 200, $paginationData);
     }
 
     /**
@@ -42,9 +43,10 @@ class DataController extends Controller
      * @bodyParam description string required The description of the data
      * @bodyParam short_description string required The short descripotion of the data
      * @bodyParam category string required The category of the data
-     * @bodyParam price numeric required The price of the data
+     * @bodyParam price numeric required The price of the data. Example: 100.20
      * @bodyParam image file The image file. Required if the image link is not provided.
      * @bodyParam image_link string The link to the image. Required if image file is not provided.
+     * @responseFile app/docs/store.json
      *
      * @param Request $request
      * @return JsonResponse
@@ -55,7 +57,7 @@ class DataController extends Controller
 
         $validation = Data::validate($requestData);
         if ($validation->fails()) {
-            return $this->error('Validation Error', 400, $validation->errors());
+            return $this->error('Validation Error', 400, $validation->errors()->toArray());
         }
 
         if ($request->hasFile('image')) {
@@ -71,6 +73,7 @@ class DataController extends Controller
      * Fetch the detail of a data resource
      *
      * @urlParam id string required The id of the data resource
+     * @responseFile app/docs/show.json
      *
      * @param string id The id of the data resource
      * @return JsonResponse
@@ -91,11 +94,12 @@ class DataController extends Controller
      *
      * @bodyParam title string required The title of the data
      * @bodyParam description string required The description of the data
-     * @bodyParam short_description string required The short descripotion of the data
+     * @bodyParam short_description string required The short description of the data
      * @bodyParam category string required The category of the data
-     * @bodyParam price numeric required The price of the data
+     * @bodyParam price numeric required The price of the data. Example: 500
      * @bodyParam image file The image file. Required if the image link is not provided.
      * @bodyParam image_link string The link to the image. Required if image file is not provided.
+     * @responseFile app/docs/update.json
      *
      * @param Request $request
      * @param string id The id of the data resource
@@ -106,7 +110,7 @@ class DataController extends Controller
 
         $validation = Data::validate($requestData, $id);
         if ($validation->fails()) {
-            return $this->error('Validation Error', 400, $validation->errors());
+            return $this->error('Validation Error', 400, $validation->errors()->toArray());
         }
 
         $data = Data::find($id);
@@ -114,17 +118,18 @@ class DataController extends Controller
             return $this->error('Resource not found', 404);
         }
 
-        if (!$update = $data->update($data)) {
+        if (!$data->update($requestData)) {
             return $this->error('Something went wrong', 500);
         }
 
-        return $this->success($update, 201);
+        return $this->success($data, 201);
     }
 
     /**
      * Deletes a data resource
      *
      * @urlParam id string required The id of the data resource
+     * @responseFile app/docs/destroy.json
      *
      * @param string id The id of the data resource
      * @return JsonResponse

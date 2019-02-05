@@ -128,6 +128,7 @@ return [
                     'headers' => [
                         'Content-Type' => 'application/json',
                         'Accept' => 'application/json',
+                        'token' => env('SECURITY_TOKEN')
                         // 'key' => 'value',
                     ],
 

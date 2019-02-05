@@ -16,5 +16,11 @@
 
 - barryvdh/laravel-cors: To allow CORS access to resource
 - mpociot/laravel-apidoc-generator: To generate api documentation
+- phpunit/phpunit: For testing
 - ramsey/uuid: To create UUIDs for each model
 - spatie/laravel-query-builder: For filtering
+
+## API Documentation
+
+The api documentation is available at `http://server.url/docs` where `server.url` 
+is the url to the server

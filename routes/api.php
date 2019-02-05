@@ -16,3 +16,10 @@ use Illuminate\Http\Request;
 Route::group(['middleware' => ['auth.hard']], function() {
     Route::resource('data', 'DataController');
 });
+
+Route::fallback(function () {
+    return response()->json([
+        'status' => 'error',
+        'message' => 'Not Found'
+    ], 404);
+});
