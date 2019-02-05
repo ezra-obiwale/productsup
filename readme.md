@@ -20,7 +20,22 @@
 - ramsey/uuid: To create UUIDs for each model
 - spatie/laravel-query-builder: For filtering
 
+## Commands
+
+  - `php artisan data:fetch` - Fetch many or single data resource
+  - `php artisan data:create` - Create a data resource
+  - `php artisan data:update` - Update a data resource
+  - `php artisan data:delete` - Delete a data resource
+
+**Note**: Use the `-h` option to see how to use each command.
+
 ## API Documentation
 
 The api documentation is available at `http://server.url/docs` where `server.url` 
-is the url to the server
+is the url to the server.
+
+## Tests
+
+Update the `DB_DATABASE` variable in the `phpunit.xml` to point to the `test-database.sqlite` file.
+
+Then run `composer phpunit`
