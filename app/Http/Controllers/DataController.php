@@ -17,7 +17,7 @@ class DataController extends Controller
 
     /**
      * Fetch a paginated list of data.
-     * 
+     *
      * Support filtering with on all fields. For exampole, `/api/data?q[description]=sodium
      *
      * @return JsonResponse
@@ -25,7 +25,7 @@ class DataController extends Controller
     public function index() : JsonResponse
     {
         $paginationData = QueryBuilder::for(Data)::allowedFilters(
-            'title', 'description', 'short_description', 
+            'title', 'description', 'short_description',
             'category', 'price', 'image_link', 'deeplink'
             )
             ->simplePaginate(10)
@@ -37,7 +37,7 @@ class DataController extends Controller
 
     /**
      * Create a new data resource
-     * 
+     *
      * @bodyParam title string required The title of the data
      * @bodyParam description string required The description of the data
      * @bodyParam short_description string required The short descripotion of the data
@@ -45,7 +45,7 @@ class DataController extends Controller
      * @bodyParam price numeric required The price of the data
      * @bodyParam image file The image file. Required if the image link is not provided.
      * @bodyParam image_link string The link to the image. Required if image file is not provided.
-     * 
+     *
      * @param Request $request
      * @return JsonResponse
      */
@@ -69,9 +69,9 @@ class DataController extends Controller
 
     /**
      * Fetch the detail of a data resource
-     * 
+     *
      * @urlParam id string required The id of the data resource
-     * 
+     *
      * @param string id The id of the data resource
      * @return JsonResponse
      */
@@ -86,9 +86,9 @@ class DataController extends Controller
 
     /**
      * Update an existing data resource
-     * 
+     *
      * @urlParam id string required The id of the data resource
-     * 
+     *
      * @bodyParam title string required The title of the data
      * @bodyParam description string required The description of the data
      * @bodyParam short_description string required The short descripotion of the data
@@ -96,7 +96,7 @@ class DataController extends Controller
      * @bodyParam price numeric required The price of the data
      * @bodyParam image file The image file. Required if the image link is not provided.
      * @bodyParam image_link string The link to the image. Required if image file is not provided.
-     * 
+     *
      * @param Request $request
      * @param string id The id of the data resource
      */
@@ -104,7 +104,7 @@ class DataController extends Controller
     {
         $requestData = $request->all();
 
-        $validation = Data::validate($requestData);
+        $validation = Data::validate($requestData, $id);
         if ($validation->fails()) {
             return $this->error('Validation Error', 400, $validation->errors());
         }
@@ -123,9 +123,9 @@ class DataController extends Controller
 
     /**
      * Deletes a data resource
-     * 
+     *
      * @urlParam id string required The id of the data resource
-     * 
+     *
      * @param string id The id of the data resource
      * @return JsonResponse
      */
@@ -144,7 +144,7 @@ class DataController extends Controller
 
     /**
      * Upload the image in the request
-     * 
+     *
      * @param Request $request
      * @return string The full url to image
      */
@@ -156,11 +156,11 @@ class DataController extends Controller
 
     /**
      * Create a success json response
-     * 
+     *
      * @param mixed $data The success data
      * @param int $code The status code
      * @param array $meta The meta to return with the success data, if any.
-     * 
+     *
      * @return JsonResponse
      */
     protected function success($data, int $code = 200, array $meta = null) : JsonResponse
@@ -177,11 +177,11 @@ class DataController extends Controller
 
     /**
      * Create an error json response
-     * 
+     *
      * @param string $message The error message
      * @param int $code The status code
      * @param array $errors The array of errors that occured
-     * 
+     *
      * @return JsonResponse
      */
     protected function error(string $message, int $code = 400, array $errors = []) : JsonResponse

@@ -4,6 +4,10 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Console\Commands\Data\Create;
+use App\Console\Commands\Data\Delete;
+use App\Console\Commands\Data\Fetch;
+use App\Console\Commands\Data\Update;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,7 +17,10 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Create::class,
+        Delete::class,
+        Fetch::class,
+        Update::class
     ];
 
     /**
